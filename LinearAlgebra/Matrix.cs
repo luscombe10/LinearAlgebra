@@ -19,7 +19,7 @@ namespace LinearAlgebra
         public double this[int iIndex, int jIndex]
         {
             get => data[iIndex, jIndex];
-            set => data[iIndex, jIndex] = value;
+            set => data[iIndex, jIndex] = value; // this could be dangerous - make this immutable?
         }
         public double[,] Data
         {
@@ -34,6 +34,11 @@ namespace LinearAlgebra
         public double MemoryUsage()
         {
             return (rows * columns * 64) / 8.0;
+        }
+
+        public bool SameShape(Matrix other)
+        {
+            return this.rows == other.rows && this.columns == other.columns;
         }
 
         public Matrix Copy()
@@ -52,7 +57,7 @@ namespace LinearAlgebra
 
         public bool Equals(Matrix other)
         {
-            if (rows == other.rows && columns==other.columns)
+            if (SameShape(other))
             {
                 for (int i=0; i<rows; i++)
                 {
@@ -70,6 +75,54 @@ namespace LinearAlgebra
             {
                 return false;
             }
+        }
+
+        public Matrix Add(Matrix other)
+        {
+            if (SameShape(other))
+            {
+                return arithemticOperation(other, true);
+            }
+            else
+            {
+                throw new MatrixDimensionException(
+                    $"Dimension missmatch expected {rows}x{columns} got {other.rows}x{other.columns}"
+                    );
+            }
+        }
+
+        public Matrix Subtract(Matrix other)
+        {
+            if (SameShape(other))
+            {
+                return arithemticOperation(other, false);
+            }
+            else
+            {
+                throw new MatrixDimensionException(
+                    $"Dimension missmatch expected {rows}x{columns} got {other.rows}x{other.columns}"
+                    );
+            }
+        }
+
+        private Matrix arithemticOperation(Matrix  other, bool addition)
+        {
+            double[,] outputData = new double[rows, columns];
+            for (int i=0; i<rows; i++)
+            {
+                for (int j=0; j<columns; j++)
+                {
+                    if (addition)
+                    {
+                        outputData[i, j] = data[i, j] + other[i, j];
+                    }
+                    else
+                    {
+                        outputData[i, j] = data[i, j] - other[i, j];
+                    }
+                }
+            }
+            return new Matrix(outputData);
         }
 
         public Matrix Multiply(Matrix other)

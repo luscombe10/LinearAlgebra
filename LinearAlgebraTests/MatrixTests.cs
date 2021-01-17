@@ -9,6 +9,8 @@ namespace LinearAlgebraTests
         public void Setup()
         {
         }
+
+        // build some test helper functions to make matrices
         [Test]
         public void TestEquals()
         {
@@ -41,8 +43,28 @@ namespace LinearAlgebraTests
             Matrix result = x.Multiply(y);
             Assert.IsTrue(result.Equals(new Matrix(new double[2, 2] { { 40, 70 }, { 40, 70 } })));
             // try with Identity
-            result = new Matrix(new double[2, 2] { { 1, 0 }, { 0, 1 } }).Multiply(x);
+            result = x.Multiply(new Matrix(new double[3, 3] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } }));
+
             Assert.IsTrue(x.Equals(result));
+        }
+
+        [Test]
+        public void TestAdd()
+        {
+            Matrix x = new Matrix(new double[3, 3] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+            Matrix y = new Matrix(new double[3, 3] { { 0, 2, 0 }, { 1, 0, 0 }, { 0, 0, 6 } });
+            Matrix result = x.Add(y);
+            Assert.IsTrue(result.Equals(new Matrix(new double[3, 3] { { 1, 2, 0 }, { 1, 1, 0 }, { 0, 0, 7 } })));
+
+        }
+
+        [Test]
+        public void TestSubtract()
+        {
+            Matrix x = new Matrix(new double[3, 3] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+            Matrix y = new Matrix(new double[3, 3] { { 0, 2, 0 }, { 1, 0, 0 }, { 0, 0, 6 } });
+            Matrix result = x.Subtract(y);
+            Assert.IsTrue(result.Equals(new Matrix(new double[3, 3] { { 1, -2, 0 }, { -1, 1, 0 }, { 0, 0, -5 } })));
         }
     }
 }
