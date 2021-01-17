@@ -66,5 +66,12 @@ namespace LinearAlgebraTests
             Matrix result = x.Subtract(y);
             Assert.IsTrue(result.Equals(new Matrix(new double[3, 3] { { 1, -2, 0 }, { -1, 1, 0 }, { 0, 0, -5 } })));
         }
+
+        [Test]
+        public void TestTranspose()
+        {
+            Matrix x = new Matrix(new double[3, 2] { { 1, 2 }, { 0, 1 }, { 1, 0 } });
+            Assert.IsTrue(x.Transpose().Equals(new Matrix(new double[2, 3] { { 1, 0, 1 }, { 2, 1, 0 } })));
+        }
     }
 }

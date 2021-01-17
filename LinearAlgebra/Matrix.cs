@@ -4,11 +4,11 @@ using System.Text;
 
 namespace LinearAlgebra
 {
-    public class Matrix: ILinearAlgebra<Matrix>
+    public class Matrix : ILinearAlgebra<Matrix>
     {
         private double[,] data;
-        private int rows;
-        private int columns;
+        private protected int rows;
+        private protected int columns;
 
         public Matrix(double[,] dataArray)
         {
@@ -19,7 +19,6 @@ namespace LinearAlgebra
         public double this[int iIndex, int jIndex]
         {
             get => data[iIndex, jIndex];
-            set => data[iIndex, jIndex] = value; // this could be dangerous - make this immutable?
         }
         public double[,] Data
         {
@@ -41,7 +40,12 @@ namespace LinearAlgebra
             return this.rows == other.rows && this.columns == other.columns;
         }
 
-        public Matrix Copy()
+        public Matrix ShallowCopy()
+        {
+            return new Matrix(data);
+        }
+
+        public Matrix DeepCopy()
         {
             double[,] newData = new double[rows,columns];
             for (int i=0; i<rows; i++)
@@ -54,6 +58,19 @@ namespace LinearAlgebra
             return new Matrix(newData);
         }
 
+        public Matrix Transpose()
+        {
+            double[,] transposeArray = new double[columns, rows];
+            for (int i=0; i<rows; i++)
+            {
+                for (int j=0; j<columns; j++)
+                {
+                    transposeArray[j, i] = data[i, j];
+                }
+            }
+            return new Matrix(transposeArray);
+
+        }
 
         public bool Equals(Matrix other)
         {
@@ -129,19 +146,19 @@ namespace LinearAlgebra
         {
             if (columns == other.rows)
             {
-                Matrix outputMatrix = new Matrix(new double[rows, other.columns]);
+                double[,] outputArray = new double[rows, other.columns];
                 for (int i=0; i<rows; i++)
                 {
                     for (int j=0; j<other.columns; j++)
                     {
-                        outputMatrix[i, j] = 0;
+                        outputArray[i, j] = 0;
                         for (int k=0; k<columns; k++)
                         {
-                            outputMatrix[i, j] += data[i, k] * other[k, j];
+                            outputArray[i, j] += data[i, k] * other[k, j];
                         }
                     }
                 }
-                return outputMatrix;
+                return new Matrix(outputArray);
             }
             else
             {
