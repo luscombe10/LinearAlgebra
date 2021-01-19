@@ -25,9 +25,9 @@ namespace LinearAlgebra
             get => data;
         }
 
-        public (int, int) Shape()
+        public (int, int) Shape
         {
-            return (rows, columns);
+           get => (rows, columns);
         }
 
         public double MemoryUsage()
@@ -61,15 +61,14 @@ namespace LinearAlgebra
         public Matrix Transpose()
         {
             double[,] transposeArray = new double[columns, rows];
-            for (int i=0; i<rows; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j=0; j<columns; j++)
+                for (int j = 0; j < columns; j++)
                 {
                     transposeArray[j, i] = data[i, j];
                 }
             }
             return new Matrix(transposeArray);
-
         }
 
         public bool Equals(Matrix other)
@@ -166,6 +165,24 @@ namespace LinearAlgebra
                     $"Matrix Dimension missmatch, left is {rows}x{columns}, right is {other.rows}x{other.columns}"
                     );
             }
+        }
+        public void SwapRowsInPlace(int row1, int row2)
+        {
+            data = swapRowsInPlace(data, (row1, row2));
+        }
+
+        private double[,] swapRowsInPlace(double[,] inputArray, (int, int) RowsToSwap)
+        {
+
+            int numberOfColumns = inputArray.GetLength(1);
+            double[] rowBuffer = new double[numberOfColumns];
+            for (int i = 0; i < numberOfColumns; i++)
+            {
+                rowBuffer[i] = inputArray[RowsToSwap.Item1, i];
+                inputArray[RowsToSwap.Item1, i] = inputArray[RowsToSwap.Item2, i];
+                inputArray[RowsToSwap.Item2, i] = rowBuffer[i];
+            }
+            return inputArray;
         }
     }
 }

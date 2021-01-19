@@ -73,5 +73,19 @@ namespace LinearAlgebraTests
             Matrix x = new Matrix(new double[3, 2] { { 1, 2 }, { 0, 1 }, { 1, 0 } });
             Assert.IsTrue(x.Transpose().Equals(new Matrix(new double[2, 3] { { 1, 0, 1 }, { 2, 1, 0 } })));
         }
+
+
+        [Test]
+        public void TestSwapRowsInPlace()
+        {
+            Matrix x = new Matrix(new double[3, 3] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+            x.SwapRowsInPlace(0, 1);
+            Assert.IsTrue(x.Equals(new Matrix(new double[3, 3] { { 0, 1, 0 }, { 1, 0, 0 }, { 0, 0, 1 } })));
+        }
+        //[Test]
+        //public void TestSolve()
+        //{
+        //    Matrix x = new Matrix;
+        //}
     }
 }
