@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LinearAlgebra
 {
-    public class LUPDecomposition
+    public class LUPDecomposition : MatrixBase<LUPDecomposition>
     {
         public Matrix LUMatrix;
         private int[] PermutationArray;
@@ -19,6 +19,16 @@ namespace LinearAlgebra
             }
             LUMatrix = new Matrix(luArray);
             PermutationArray = permutationArray;
+        }
+
+        public override double MemoryUsage()
+        {
+            return ((double)PermutationArray.Length * 32) + LUMatrix.MemoryUsage();
+        }
+
+        public override bool Equals(LUPDecomposition other)
+        {
+            return false;
         }
     }
 }
