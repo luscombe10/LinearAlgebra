@@ -6,24 +6,26 @@ namespace LinearAlgebra
 {
     public class LUPDecomposition : MatrixBase<LUPDecomposition>
     {
-        public Matrix LUMatrix;
+        private Matrix luMatrix;
         private int[] PermutationArray;
         public LUPDecomposition(Matrix A)
         {
-            double[,] luArray = new double[A.Shape.Item1, A.Shape.Item2];
-            double[] swapArray = new double[A.Shape.Item2]; 
-            int[] permutationArray = new int[A.Shape.Item1];
-            for (int i = 1; i < A.Shape.Item1; i++)
-            {
-                
-            }
-            LUMatrix = new Matrix(luArray);
+            int shape = A.Shape.Item1;
+            double[,] luArray = new double[shape, shape];
+            double[] swapArray = new double[shape];
+            int[] permutationArray = new int[shape];
+            luMatrix = new Matrix(luArray);
             PermutationArray = permutationArray;
         }
 
         public override double MemoryUsage()
         {
-            return ((double)PermutationArray.Length * 32) + LUMatrix.MemoryUsage();
+            return ((double)PermutationArray.Length * 32) + luMatrix.MemoryUsage();
+        }
+
+        public Matrix LUMatrix
+        {
+            get => luMatrix;
         }
 
         public override bool Equals(LUPDecomposition other)
@@ -32,3 +34,4 @@ namespace LinearAlgebra
         }
     }
 }
+
